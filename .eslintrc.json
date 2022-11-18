@@ -1,6 +1,6 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "next/link-passhref": true
+    "next/link-passhref": 0
   }
 }
