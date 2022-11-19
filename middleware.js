@@ -1,11 +1,13 @@
-import { NextResponse } from 'next/server'
+import {NextResponse, userAgent} from 'next/server'
 
 export function middleware(request) {
-    if (!request.cookies.authToken) {
-        return NextResponse.rewrite(new URL('/login', request.url))
-    }
+    const { browser } = userAgent(request)
+    console.log('request.cookies', request.cookies);
+    console.log('request.geo', request.geo);
+    console.log('userAgent.browser', browser);
+    return NextResponse.next()
 }
 
 export const config = {
-    matcher: '/dashboard',
+    matcher: '/posts/:post*',
 }
