@@ -4,10 +4,9 @@ import Link from 'next/link'
 import styles from './layout.module.sass'
 import utilStyles from '../styles/utils.module.sass'
 
-const name = 'Mykola';
 export const siteTitle = 'Next.js Sample Website';
 
-export default function Layout({ children, home }) {
+export default function Layout({ children, home, name }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -30,6 +29,7 @@ export default function Layout({ children, home }) {
           <>
             <Image
               priority
+              quality={1}
               src="/images/profile.jpg"
               className={utilStyles.borderCircle}
               height={144}
