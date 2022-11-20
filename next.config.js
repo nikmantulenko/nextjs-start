@@ -3,6 +3,7 @@ module.exports = nextConfig = {
   env: {
     development: true,
   },
+  swcMinify: true,
   // async rewrites() {
   //   return [
   //     {
