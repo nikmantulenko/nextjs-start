@@ -1,8 +1,7 @@
 import React from 'react'
-import App from 'next/app'
 import Script from 'next/script'
 import { Roboto } from '@next/font/google'
-import { getStores, StoreProvider } from '../stores'
+import { StoreProvider } from '../stores'
 import '../styles/globals.css'
 
 const roboto = Roboto({
@@ -10,7 +9,7 @@ const roboto = Roboto({
   subsets: ['latin'],
 })
 
-function MyApp({ Component, pageProps, initialData }) {
+function MyApp({ Component, pageProps }) {
   return (
     <>
       <Script src={'https://connect.facebook.net/en_US/sdk.js'} strategy="lazyOnload" />
@@ -19,25 +18,11 @@ function MyApp({ Component, pageProps, initialData }) {
             font-family: ${roboto.style.fontFamily};
           }
         `}</style>
-      <StoreProvider value={getStores(initialData)}>
+      <StoreProvider hydrationData={pageProps.hydrationData}>
         <Component {...pageProps} />
       </StoreProvider>
     </>
   )
-}
-
-MyApp.getInitialProps = async (appContext) => {
-  const initialData = {
-    postStoreInitialData: '1',
-  }
-
-  // Make stores available to page's `getInitialProps`
-  appContext.ctx.mobxStores = getStores(initialData)
-
-  return {
-    ...(await App.getInitialProps(appContext)),
-    initialData,
-  }
 }
 
 export default MyApp

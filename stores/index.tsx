@@ -1,37 +1,31 @@
-import React from 'react'
-import PostStore from './PostStore'
-import UIStore from './UIStore'
-
+import React, { useContext, ReactNode } from 'react'
 import { enableStaticRendering } from 'mobx-react'
+import PostsStore, { PostsStoreHydration } from './PostsStore'
+import isServer from '../utils/isServer'
 
-const isServer = typeof window === 'undefined'
 enableStaticRendering(isServer)
 
-let clientSideStores
+export type { PostsStoreHydration }
 
-export function getStores(initialData: { postStoreInitialData: string }) {
-  if (isServer) {
-    return {
-      postStore: new PostStore(initialData.postStoreInitialData),
-      uiStore: new UIStore(),
-    }
-  }
-  if (!clientSideStores) {
-    clientSideStores = {
-      postStore: new PostStore(initialData.postStoreInitialData),
-      uiStore: new UIStore(),
-    }
-  }
+let store: PostsStore
 
-  return clientSideStores
+// read about store duplication
+export function getStore(data?: PostsStoreHydration) {
+  if (store == null) store = new PostsStore()
+  if (data) store.hydrate(data)
+  return store
 }
 
-const StoreContext = React.createContext()
+const StoreContext = React.createContext<PostsStore>(null as any)
 
-export function StoreProvider(props) {
-  return <StoreContext.Provider value={props.value}>{props.children}</StoreContext.Provider>
+export function StoreProvider(props: { children: ReactNode, hydrationData?: PostsStoreHydration }) {
+  const store = getStore(props.hydrationData)
+
+  return (
+    <StoreContext.Provider value={store}>{props.children}</StoreContext.Provider>
+  )
 }
 
-export function useMobxStores() {
-  return React.useContext(StoreContext)
+export function useStore(): PostsStore {
+  return useContext(StoreContext)
 }
