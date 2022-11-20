@@ -13,7 +13,7 @@ const roboto = Roboto({
 function MyApp({ Component, pageProps, initialData }) {
   return (
     <>
-      <Script src="https://connect.facebook.net/en_US/sdk.js" strategy="lazyOnload" />
+      <Script src={'https://connect.facebook.net/en_US/sdk.js'} strategy="lazyOnload" />
       <style jsx global>{`
           html {
             font-family: ${roboto.style.fontFamily};

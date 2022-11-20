@@ -12,8 +12,8 @@ export default function Home(props) {
       <section className={utilStyles.headingMd}>
         <p>Hello, I’m {props.user.name}</p>
         <p>And my User Agent is {props.userAgent}</p>
-        <h2 className={utilStyles.headingMd}>Read <Link href="/posts/1">First post!</Link></h2>
-        <h2 className={utilStyles.headingMd}>Read <Link href="/posts/2">Second post!</Link></h2>
+        <h2 className={utilStyles.headingMd}>Read <Link href={'/posts/1'}>First post!</Link></h2>
+        <h2 className={utilStyles.headingMd}>Read <Link href={'/posts/2'}>Second post!</Link></h2>
       </section>
     </Layout>
   )
