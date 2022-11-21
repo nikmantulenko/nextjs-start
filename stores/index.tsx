@@ -16,7 +16,7 @@ export function getStore(data?: PostsStoreHydration) {
   return store
 }
 
-const StoreContext = React.createContext<PostsStore>(null as any)
+const StoreContext = React.createContext<PostsStore | null>(null)
 
 export function StoreProvider(props: { children: ReactNode, hydrationData?: PostsStoreHydration }) {
   const store = getStore(props.hydrationData)
@@ -27,5 +27,7 @@ export function StoreProvider(props: { children: ReactNode, hydrationData?: Post
 }
 
 export function useStore(): PostsStore {
-  return useContext(StoreContext)
+  const store = useContext(StoreContext)
+  if (store == null) throw new Error('[useStore] Context has not been provided.')
+  return store
 }
