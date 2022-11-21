@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -6,7 +7,13 @@ import utilStyles from '../styles/utils.module.sass'
 
 export const siteTitle = 'Next.js Sample Website';
 
-export default function Layout({ children, home, name }) {
+interface LayoutProps {
+  children: ReactNode
+  home?: boolean
+  name: string
+}
+
+export default function Layout(props: LayoutProps) {
   return (
     <div className={styles.container}>
       <Head>
@@ -25,7 +32,7 @@ export default function Layout({ children, home, name }) {
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <header className={styles.header}>
-        {home ? (
+        {props.home ? (
           <>
             <Image
               priority
@@ -36,7 +43,7 @@ export default function Layout({ children, home, name }) {
               width={144}
               alt=""
             />
-            <h1 className={utilStyles.heading2Xl}>{name}</h1>
+            <h1 className={utilStyles.heading2Xl}>{props.name}</h1>
           </>
         ) : (
           <>
@@ -52,13 +59,13 @@ export default function Layout({ children, home, name }) {
             </Link>
             <h2 className={utilStyles.headingLg}>
               <Link href="/" className={utilStyles.colorInherit}>
-                {name}
+                {props.name}
               </Link>
             </h2>
           </>
         )}
-        <main>{children}</main>
-        {!home && (
+        <main>{props.children}</main>
+        {!props.home && (
           <div className={styles.backToHome}>
             <Link href="/">← Back to home</Link>
           </div>

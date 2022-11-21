@@ -12,7 +12,7 @@ export default function PostPage(props: PostPageProps) {
   const { authorStore } = useStore()
 
   return (
-    <Layout home={false} name={authorStore.name}>
+    <Layout name={authorStore.name}>
       <Head>
         <title>{`Post ${props.id}`}</title>
       </Head>

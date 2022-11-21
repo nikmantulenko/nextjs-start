@@ -5,7 +5,7 @@ export type AuthorStoreHydration = {
 }
 
 export default class AuthorStore {
-  name?: string
+  name: string = ''
 
   constructor() {
     makeAutoObservable(this)
