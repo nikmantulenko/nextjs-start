@@ -1,14 +1,11 @@
+import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next'
 import Head from 'next/head';
 import Link from 'next/link';
 import Layout, { siteTitle } from '../components/layout'
+import fetchPosts from './api/fetchPosts'
 import utilStyles from '../styles/utils.module.sass'
 
-type HomeProps = {
-  posts: Array<{id: string, title: string}>
-  author: { name: string }
-}
-
-function Home(props: HomeProps) {
+function Home(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <Layout name={props.author.name} home>
       <Head>
@@ -26,11 +23,12 @@ function Home(props: HomeProps) {
   )
 }
 
-Home.getInitialProps = async (): Promise<HomeProps> => {
-  const posts = await Promise.resolve([{id: '1', title: 'First Post'}, {id: '2', title: 'Second Post'}])
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   return {
-    posts,
-    author: { name: 'Mykola' },
+    props: {
+      posts: await fetchPosts(),
+      author: { name: 'Mykola' },
+    },
   }
 }
 

@@ -1,10 +1,12 @@
+import { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
+import fetchPostDetails from '../api/fetchPostDetails'
 import Layout from '../../components/layout'
 
 type PostPageProps = {
   author: { name: string }
   id: string
-  post?: { id: string, title: string }
+  post?: { id: string, title: string, content: string }
 }
 
 export default function PostPage(props: PostPageProps) {
@@ -15,7 +17,10 @@ export default function PostPage(props: PostPageProps) {
       </Head>
 
       {props.post ? (
-        <h1>{props.post.title}</h1>
+        <>
+          <h1>{props.post.title}</h1>
+          <p>{props.post.content}</p>
+        </>
       ) : (
         <h1>NOT FOUND</h1>
       )}
@@ -23,13 +28,14 @@ export default function PostPage(props: PostPageProps) {
   )
 }
 
-PostPage.getInitialProps = async ({ query }: { query: { id: string } }): Promise<PostPageProps> => {
-  const posts = await Promise.resolve([{id: '1', title: 'First Post'}, {id: '2', title: 'Second Post'}])
-  const post = posts.find(post => post.id === query.id)
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  if (typeof context.query.id !== 'string') throw new Error('unexpected query')
 
   return {
-    author: { name: 'Mykola' },
-    id: query.id,
-    post,
+    props: {
+      author: { name: 'Mykola' },
+      id: context.query.id,
+      post: await fetchPostDetails(context.query.id),
+    },
   }
 }
