@@ -2,7 +2,6 @@ import React from 'react'
 import { AppProps } from 'next/app'
 import Script from 'next/script'
 import { Roboto } from '@next/font/google'
-import { StoreProvider, RootStoreHydration } from '../stores'
 import '../styles/globals.css'
 
 const roboto = Roboto({
@@ -10,7 +9,7 @@ const roboto = Roboto({
   subsets: ['latin'],
 })
 
-function MyApp({ Component, pageProps }: AppProps<{hydrationData?: RootStoreHydration}>) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Script src={'https://connect.facebook.net/en_US/sdk.js'} strategy="lazyOnload" />
@@ -19,9 +18,7 @@ function MyApp({ Component, pageProps }: AppProps<{hydrationData?: RootStoreHydr
             font-family: ${roboto.style.fontFamily};
           }
         `}</style>
-      <StoreProvider hydrationData={pageProps.hydrationData}>
-        <Component {...pageProps} />
-      </StoreProvider>
+      <Component {...pageProps} />
     </>
   )
 }
