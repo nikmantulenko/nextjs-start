@@ -1,7 +1,9 @@
 // import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next'
+import { GetStaticProps } from 'next'
 import Head from 'next/head';
-// import Link from 'next/link';
+import Link from 'next/link';
 import Layout, { siteTitle } from '../components/layout'
+import Date from '../components/date'
 import { getSortedPostsData } from '../lib/posts'
 import utilStyles from '../styles/utils.module.sass'
 
@@ -35,11 +37,11 @@ function Home(props: HomeProps) {
           <ul className={utilStyles.list}>
             {props.postsData.map(post => (
               <li className={utilStyles.listItem} key={post.id}>
-                {post.title}
+                <Link href={`/posts/${post.id}`}>{post.title}</Link>
                 <br />
-                {post.id}
-                <br />
-                {post.date}
+                <small className={utilStyles.lightText}>
+                  <Date dateString={post.date} />
+                </small>
               </li>
             ))}
           </ul>
@@ -49,7 +51,7 @@ function Home(props: HomeProps) {
   )
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const postsData = await getSortedPostsData()
 
   return {
