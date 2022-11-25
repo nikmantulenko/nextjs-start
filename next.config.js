@@ -11,6 +11,12 @@ module.exports = nextConfig = {
 
     return config
   },
+  sassOptions: {
+    additionalData: `
+      @import "styles/variables.sass"
+      @import "styles/mixins.sass"
+    `
+  }
   // async rewrites() {
   //   return [
   //     {
