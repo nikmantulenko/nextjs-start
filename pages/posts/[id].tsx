@@ -51,13 +51,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: postIds.map(id => ({ params: { id } })),
-    fallback: false,
+    fallback: 'blocking',
   }
 }
 
 export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ params }) => {
-  if (params == null) throw new Error('unexpected behavior')
+  if (params == null) return { notFound: true }
   const postDetails = await getPostDetails(params.id)
+  if (postDetails == null) return { notFound: true }
 
   return {
     props: {

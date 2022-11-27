@@ -26,20 +26,24 @@ export async function getSortedPostsData() {
   return sortBy(postsData, 'date')
 }
 
-export async function getPostDetails(id: string): Promise<any> {
+export async function getPostDetails(id: string): Promise<any | null> {
   const fullPath = path.join(postsDirectory, id + '.md')
-  const fileContents = await fs.readFile(fullPath, 'utf8')
-  const matterResult = matter(fileContents)
+  try {
+    const fileContents = await fs.readFile(fullPath, 'utf8')
+    const matterResult = matter(fileContents)
 
-  const processedContent = await remark()
-    .use(html)
-    .process(matterResult.content)
-  const contentHtml = processedContent.toString()
+    const processedContent = await remark()
+      .use(html)
+      .process(matterResult.content)
+    const contentHtml = processedContent.toString()
 
-  return {
-    id,
-    contentHtml,
-    ...matterResult.data,
+    return {
+      id,
+      contentHtml,
+      ...matterResult.data,
+    }
+  } catch (error) {
+    return null
   }
 }
 
